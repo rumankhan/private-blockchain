@@ -77,6 +77,12 @@ class Blockchain {
         });
     }
 
+    /**
+     * Private method to push the block to blockchain and
+     * validate the chain
+     * @param {*} block 
+     * @param {*} self
+     */
     _pushBlockToChain(block,self){
         block.height = self.chain.length;
         block.time = new Date().getTime().toString().slice(0,-3);
@@ -86,6 +92,7 @@ class Blockchain {
         self.height = self.chain.length;
         this.validateChain();
     }
+    
     /**
      * The requestMessageOwnershipVerification(address) method
      * will allow you  to request a message that you will use to
