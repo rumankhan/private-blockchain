@@ -39,19 +39,19 @@ This code is a simple architecture for a Blockchain application, it includes a R
 
 1. Run your application using the command `node app.js`
 2. Request block by height: http://localhost:8000/block/0
-    ![Request: http://localhost:8000/block/0 ](/docs/request-genesis.png)
-3. Make your first request of ownership sending your wallet address:
-    ![Request: http://localhost:8000/requestValidation ](docs/request-ownership.png)
+    ![Request: http://localhost:8000/block/0 ](/docs/request-genesis.PNG)
+3. Make your first request of ownership sending your wallet address: http://localhost:8000/requestValidation
+    ![Request: http://localhost:8000/requestValidation ](docs/request-ownership.PNG)
 4. Sign the message with your Wallet: (If you are using latest Bitcoin core on Testnet, use getnewaddress "legacywalletlabel" legacy to generate legacy wallet address which can be used to sign message on Testnet)
-    ![Use the Wallet to sign a message](/docs/sign-message.png)
-5. Submit your Star
-     ![Request: http://localhost:8000/submitstar](/docs/signing-message.png)
-6. Retrieve Stars owned by me
-    ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](/docs/retrieve-stars.png)
-7. ValidateChain
-    ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](/docs/retrieve-stars.png)
+    ![Use the Wallet to sign a message](/docs/sign-message.PNG)
+5. Submit your Star: http://localhost:8000/submitstar
+     ![Request: http://localhost:8000/submitstar](/docs/submit-star.PNG)
+6. Retrieve Stars owned by walletaddress: http://localhost:8000/blocks/<WALLET_ADDRESS>
+    ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](/docs/retrieve-stars.PNG)
+7. ValidateChain: http://localhost:8000/validatechain
+    ![Request: http://localhost:8000/validatechain](/docs/validate-chain-error.PNG)
 
 References:
-CryptographicHashFunctions: https://en.wikipedia.org/wiki/Cryptographic_hash_function
-Working with Promises: https://developers.google.com/web/ilt/pwa/working-with-promises
-Udacity Blockchain course: https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309
+1. CryptographicHashFunctions: https://en.wikipedia.org/wiki/Cryptographic_hash_function
+2. Working with Promises: https://developers.google.com/web/ilt/pwa/working-with-promises
+3. Udacity Blockchain course: https://www.udacity.com/course/blockchain-developer-nanodegree--nd1309
