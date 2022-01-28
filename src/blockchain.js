@@ -36,7 +36,7 @@ class Blockchain {
     async initializeChain() {
         if( this.height === -1){
             let block = new BlockClass.Block({data: 'Genesis Block'});
-            await this._addBlock(block);
+            await this._addBlock(block).then((success) => console.log("Block Added successfully!"), (error) => console.log(error));
         }
     }
 
@@ -64,35 +64,27 @@ class Blockchain {
     _addBlock(block) {
         let self = this;
         return new Promise(async (resolve, reject) => {
-            if (block.height == 0){
-                this._pushBlockToChain(block,self);
-                resolve(block);
-            }
-            else if (block.height == self.chain.length -1 ){
-                this._pushBlockToChain(block,self);
-                resolve(block);
+            if (block.height == 0 || block.height == self.chain.length -1 ){
+                block.height = self.chain.length;
+                block.time = new Date().getTime().toString().slice(0,-3);
+                block.previousBlockHash = (self.chain.length > 0 ) ? self.chain[self.chain.length -1].hash : null;
+                block.hash = SHA256(JSON.stringify(block)).toString();
+                let invalidBlocks = await this.validateChain();
+                // Add block only if no invalid blocks found in the chain
+                if(invalidBlocks.length == 0 ){
+                    self.chain.push(block);
+                    self.height = self.chain.length;
+                    resolve(block);
+                }
+                else{
+                    resolve(invalidBlocks);
+                }
             }
             else
                 reject("Error - Block Height mismatch");
         });
     }
 
-    /**
-     * Private method to push the block to blockchain and
-     * validate the chain
-     * @param {*} block 
-     * @param {*} self
-     */
-    _pushBlockToChain(block,self){
-        block.height = self.chain.length;
-        block.time = new Date().getTime().toString().slice(0,-3);
-        block.previousBlockHash = (self.chain.length > 0 ) ? self.chain[self.chain.length -1].hash : null;
-        block.hash = SHA256(JSON.stringify(block)).toString();
-        self.chain.push(block);
-        self.height = self.chain.length;
-        this.validateChain();
-    }
-    
     /**
      * The requestMessageOwnershipVerification(address) method
      * will allow you  to request a message that you will use to
@@ -136,8 +128,8 @@ class Blockchain {
                 if (validMessage){
                     let data = {'owner' : address, 'star': star };
                     let newBlock = new BlockClass.Block(data);
-                    this._addBlock(newBlock);
-                    resolve(newBlock);
+                    await this._addBlock(newBlock).then((data) => resolve(data), (error) => reject(error));
+                    //resolve(newBlock);
                 }
             }
             else
@@ -172,7 +164,7 @@ class Blockchain {
     getBlockByHeight(height) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let block = self.chain.filter(p => p.height === height)[0];
+            let block = self.chain.find(p => p.height === height);
             if(block){
                 resolve(block);
             } else {

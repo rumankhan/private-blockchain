@@ -41,13 +41,9 @@ class Block {
             // Save in auxiliary variable the current block hash
             let currentBlockHash = self.hash;
             // Recalculate the hash of the Block
-            //let bodyText = hex2ascii(self.body); //hex2ascii has compatibility issues with special characters instead use buffer
-            let bodyText = Buffer.from(self.body, 'hex').toString('utf8');
-            let reBlock = new Block((bodyText));
-            reBlock.height = self.height;
-            reBlock.previousBlockHash = self.previousBlockHash;
-            reBlock.time = self.time;
+            let reBlock = { ...self, hash:null};
             reBlock.hash = SHA256(JSON.stringify(reBlock)).toString();
+            
             // Comparing if the hashes changed
             let isHashSame = (currentBlockHash == reBlock.hash);
             // Returning the Block is not valid
