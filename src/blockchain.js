@@ -77,7 +77,7 @@ class Blockchain {
                     resolve(block);
                 }
                 else{
-                    resolve(invalidBlocks);
+                    reject(invalidBlocks);
                 }
             }
             else
