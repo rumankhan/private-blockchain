@@ -220,13 +220,15 @@ class Blockchain {
             let promises = []
             for(let i = 0; i < self.chain.length;i++){
                 let currentBlock = self.chain[i];
-                if(i > 0 ){
-                    (self.chain[i-1].hash != currentBlock.previousBlockHash) ? errorLog.push({ "message" : "Invalid Block" , "block" :currentBlock }) : "";
+                if(i > 0 && self.chain[i-1].hash != currentBlock.previousBlockHash) 
+                {
+                    errorLog.push({ "message" : "Invalid block in the chain" , "block" :currentBlock });
+                    continue;
                 }
                 promises.push(
                     currentBlock.validate().then((result) => {
                             if(result != true) {
-                                errorLog.push({ "message" : "Invalid Block" , "block" :currentBlock });
+                                errorLog.push({ "message" : "Invalid block in the chain" , "block" :currentBlock });
                                 return ;
                             }
                         })
